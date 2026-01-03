@@ -1,0 +1,5 @@
+username,password,expected_result,description
+Admin,admin123,success,Login thanh cong
+wronguser,wrongpass,fail,Login that bai voi sai username va password
+,admin123,fail,Login that bai voi de trong username
+Admin,,fail,Login that bai voi de trong password
