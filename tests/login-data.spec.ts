@@ -2,29 +2,21 @@ import { test, expect } from "@playwright/test";
 import { LoginData, readFileFromCsv } from "../utils/csvReader";
 import { LoginPage } from "../pages/LoginPage";
 
+// Doc file csv
+const testData: LoginData[] = readFileFromCsv();
+console.log(`Da load ${testData.length} dong du lieu tu file CSV`);
+
 test.describe("Login Data from CSV Test", () => {
-  let testData: LoginData[] = [];
-  // doc file csv dung beforeAll()
-  test.beforeAll(async () => {
-    testData = await readFileFromCsv();
-
-    // nen them log de kiem tra xem da load thanh cong data chua
-    console.log(`Đã load ${testData.length} dòng dữ liệu từ file CSV`);
-    console.log("Login Data from CSV:", testData);
-  });
-
-  test("Test Data", async ({page}) => {
-    // do testData la list nen dung for de lap qua tung du lieu
-    for (let data of testData) {
-        const loginPage = new LoginPage(page);
-        await loginPage.login(data.username, data.password);
-
-        // kiem tra ket qua
-        if (data.expected_result === "success") {
-            await loginPage.isLoginSuccessfull();
+  for (let data of testData) {
+    test(`${data.description}`, async ({ page }) => {
+      const loginPage = new LoginPage(page);
+      await loginPage.login(data.username, data.password);
+      const isSuccess = await loginPage.isLoginSuccessfull();
+      if (data.expected_result === "success") {
+        expect(isSuccess).toBe(true);
       } else {
-        await loginPage.isLoginSuccessfull() === false;
+        expect(isSuccess).toBe(false);
       }
-    }
-  });
+    });
+  }
 });
