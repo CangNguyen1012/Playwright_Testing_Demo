@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test getByRole - Playwright Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Button Styles */
+        button,
+        .button {
+            padding: 12px 24px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        /* Link Styles */
+        a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Checkbox & Radio Styles */
+        .checkbox-group,
+        .radio-group {
+            margin: 10px 0;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        /* Image Styles */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        /* Alert/Message Styles */
+        .alert {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background: #333;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        nav a {
+            color: white;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Heading -->
+        <h1>Test getByRole - Playwright Demo</h1>
+        <h2>Trang này dùng để test các role của Playwright</h2>
+
+        <!-- Navigation -->
+        <nav role="navigation">
+            <a href="#home" aria-label="Trang chủ">Home</a>
+            <a href="#about" aria-label="Về chúng tôi">About</a>
+            <a href="#contact" aria-label="Liên hệ">Contact</a>
+            <a href="#admin" aria-label="Admin">Admin</a>
+        </nav>
+
+        <!-- Form Section -->
+        <div class="section">
+            <h2>Form với các input types</h2>
+            
+            <form id="testForm" role="form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Nhập username"
+                        aria-label="Username input field"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Nhập email"
+                        aria-label="Email input field"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Nhập password"
+                        aria-label="Password input field"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="country">Country:</label>
+                    <select id="country" name="country" aria-label="Country selection">
+                        <option value="">-- Select --</option>
+                        <option value="vn">Vietnam</option>
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        rows="4" 
+                        placeholder="Nhập message"
+                        aria-label="Message textarea"
+                    ></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input 
+                            type="checkbox" 
+                            id="agree" 
+                            name="agree"
+                            aria-label="Agree to terms checkbox"
+                        >
+                        Tôi đồng ý với điều khoản
+                    </label>
+                </div>
+
+                <div class="radio-group">
+                    <label>
+                        <input 
+                            type="radio" 
+                            id="male" 
+                            name="gender" 
+                            value="male"
+                            aria-label="Male gender option"
+                        >
+                        Nam
+                    </label>
+                    <label>
+                        <input 
+                            type="radio" 
+                            id="female" 
+                            name="gender" 
+                            value="female"
+                            aria-label="Female gender option"
+                        >
+                        Nữ
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary" aria-label="Submit form button">
+                    Submit
+                </button>
+                <button type="button" class="btn-secondary" aria-label="Cancel button">
+                    Cancel
+                </button>
+                <button type="button" class="btn-danger" aria-label="Delete button">
+                    Delete
+                </button>
+            </form>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="section">
+            <h2>Các loại Buttons</h2>
+            <button class="btn-primary" aria-label="Primary action button">Primary Button</button>
+            <button class="btn-secondary" aria-label="Secondary action button">Secondary Button</button>
+            <button class="btn-danger" aria-label="Danger action button">Danger Button</button>
+            <button disabled aria-label="Disabled button">Disabled Button</button>
+        </div>
+
+        <!-- Links Section -->
+        <div class="section">
+            <h2>Các Links</h2>
+            <a href="#link1" aria-label="First link">Link 1 - Home</a>
+            <a href="#link2" aria-label="Second link">Link 2 - About</a>
+            <a href="#link3" aria-label="Admin link">Link 3 - Admin</a>
+        </div>
+
+        <!-- Table Section -->
+        <div class="section">
+            <h2>Table Example</h2>
+            <table role="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>Admin</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Bob Johnson</td>
+                        <td>bob@example.com</td>
+                        <td>Manager</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Images Section -->
+        <div class="section">
+            <h2>Images</h2>
+            <img 
+                src="https://via.placeholder.com/300x200/667eea/ffffff?text=Logo" 
+                alt="Company Logo"
+                role="img"
+                aria-label="Company logo image"
+            >
+        </div>
+
+        <!-- Alerts Section -->
+        <div class="section">
+            <h2>Alert Messages</h2>
+            <div class="alert alert-success" role="alert" aria-label="Success message">
+                ✅ Thành công! Operation completed successfully.
+            </div>
+            <div class="alert alert-error" role="alert" aria-label="Error message">
+                ❌ Lỗi! Something went wrong.
+            </div>
+        </div>
+
+        <!-- Headings Section -->
+        <div class="section">
+            <h1>Heading Level 1</h1>
+            <h2>Heading Level 2</h2>
+            <h3>Heading Level 3</h3>
+            <h4>Heading Level 4</h4>
+            <h5>Heading Level 5</h5>
+            <h6>Heading Level 6</h6>
+        </div>
+
+        <!-- Combobox/Dropdown Section -->
+        <div class="section">
+            <h2>Combobox/Dropdown Examples</h2>
+            <label for="userRole">User Role:</label>
+            <select id="userRole" name="userRole" aria-label="User role selection">
+                <option value="">-- Select --</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+            </select>
+
+            <label for="status" style="margin-top: 15px; display: block;">Status:</label>
+            <select id="status" name="status" aria-label="Status selection">
+                <option value="">-- Select --</option>
+                <option value="enabled">Enabled</option>
+                <option value="disabled">Disabled</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        // Simple form submission handler for testing
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Form submitted! (This is just for testing)');
+        });
+
+        // Button click handlers
+        document.querySelectorAll('button').forEach(button => {
+            if (button.type !== 'submit') {
+                button.addEventListener('click', function() {
+                    console.log('Button clicked:', this.textContent);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
